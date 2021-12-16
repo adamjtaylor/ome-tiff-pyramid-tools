@@ -132,8 +132,6 @@ def error(path, msg):
 
 def main():
 
-    tile_size = 1024
-
     parser = argparse.ArgumentParser()
     parser.add_argument(
         "in_paths", metavar="input.tif", type=pathlib.Path, nargs="+",
@@ -152,10 +150,16 @@ def main():
         "--mask", action="store_true", default=False,
         help="adjust processing for label mask or binary mask images (currently just switch to nearest-neighbor downsampling)",
     )
+    parser.add_argument(
+        "--tile_size", metavar="TILESIZE", type=int, default=1024,
+        help="tile size in pixels; default is 1024",
+    )
     args = parser.parse_args()
     in_paths = args.in_paths
     out_path = args.out_path
     is_mask = args.mask
+    tile_size = args.tile_size
+
     if out_path.exists():
         error(out_path, "Output file already exists, aborting.")
 
